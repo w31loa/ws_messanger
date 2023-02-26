@@ -5,23 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
     <title>Blah blah</title>
 </head>
 <body>  
     <div class="container">
-        <div class="chat__wrapper">
 
-            <div class="chat__container">
-                <div id="chat" ></div>
-            </div>
+        <div class="profile_wrapper">
+            <div class="profile"></div>
+        </div>
+
+        <div class="chat__wrapper">
+            
+                <div class="chat__container">
+                    <div id="chat" >
+                        
+                    </div>
+                    <div class="wrapper_Scrollbottom"></div>
+                </div>
 
             <form id="messageForm" >
-                <input type="text" name="name" id="name" placeholder="Введите имя...">
-                <input type="text" name="message" id="message" placeholder="Введите сообщение..." value="">
+                <input type="text" name="name" id="name" placeholder="Введите имя..." autocomplete="off">
+                <input type="text" name="message" id="message" placeholder="Введите сообщение..." value="" autocomplete="off">
                 <input type="submit" value=">" class="send_button">
             </form>
 
         </div>
+        <div class="online_users_wrapper">
+            <div class="online_users">
+                <div class="online_users_inner">
+                    <span id="online_value"></span>
+                </div>
+            </div>
+        </div>
+        
     </div>
     <script src="client.js"></script>
 </body>

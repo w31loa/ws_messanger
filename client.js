@@ -1,15 +1,42 @@
 const chatEL = document.getElementById("chat")
 const ws= new WebSocket('ws://127.0.0.1:8000')
-ws.onmessage = (message) =>{
-    const messages = JSON.parse(message.data)
-    messages.forEach((val) => {
-        const messageEL = document.createElement('div')
-        messageEL.appendChild(document.createTextNode(`${val.name}:
-        ${val.message}`))
-        chat.appendChild(messageEL)
+
+function lastMessageScroll(b) {
+    var e = document.querySelector('.wrapper_Scrollbottom');
+    if (!e) return ; 
+    
+    e.scrollIntoView({
+        behavior: b || 'auto',
+        block: 'end',
     });
- 
 }
+const date = new Date
+
+ws.onmessage = (message) =>{
+    
+    
+    const messages = JSON.parse(message.data)
+    if (typeof(messages) == 'number'){
+        document.getElementById('online_value').textContent=`Пользователей в сети: ${messages}`
+    }
+    
+ 
+    messages.forEach((val) => {
+        lastMessageScroll(`smooth`)
+        const messageEL = document.createElement('div')
+        const dateEL = document.createElement('span') 
+        dateEL.appendChild(document.createTextNode(`${date.getHours()}:${date.getMinutes()}`))
+        messageEL.className="message"
+        if(document.getElementById("name").value === val.name){
+            messageEL.className="my_message"
+        }
+        messageEL.appendChild(document.createTextNode(`${val.name}: ${val.message}   `))
+       
+        chat.appendChild(messageEL)
+        messageEL.appendChild(dateEL)
+    });
+}
+
 
 
 
