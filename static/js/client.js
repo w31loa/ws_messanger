@@ -2,7 +2,7 @@
 const chatContainerEL = document.querySelector(".chat__container")
 const chatEL = document.getElementById("chat")
 let ws= new WebSocket('ws://localhost:8000')
-
+const users = document.querySelectorAll('.user')
 
 let myId = ''
 
@@ -19,15 +19,19 @@ ws.onmessage = (message) =>{
 
     if(data.myid){
         myId = data.myid
-        console.log(myId)
         document.getElementById('name_value').innerText = `${myId}`
     }
 
+    // users.forEach((item)=>{
+    //     console.log(item)
+    //     if(item.textContent == document.getElementById('collocutor').textContent){
+    //         item.classList.add('user-selected')
+    //     }
+    // })
     
 
     if(data.message){
         const message = data.message
-        console.log(message)
         const messageEL = document.createElement('div')
         const messageWrapper = document.createElement('div')
         const dateEL = document.createElement('span') 
@@ -59,7 +63,12 @@ ws.onmessage = (message) =>{
     document.getElementById('online_value').textContent=`Пользователей в сети: ${clientsOnline.length}`
     for(let i = 0 ; i < clientsOnline.length; i++){
         if(clientsOnline[i]!= myId){
-            document.querySelector('.users').innerHTML += `<div class="user" id="${clientsOnline[i]}">${clientsOnline[i]}</div>`
+         
+            if(clientsOnline[i] ==document.getElementById('collocutor').textContent ){
+                document.querySelector('.users').innerHTML += `<div class="user user-selected" id="${clientsOnline[i]}">${clientsOnline[i]}</div>`
+            }else{
+                document.querySelector('.users').innerHTML += `<div class="user" id="${clientsOnline[i]}">${clientsOnline[i]}</div>`
+            }
             if(!document.querySelector(`.chat-${clientsOnline[i]}`)){
                 chatContainerEL.innerHTML +=`<div id="chat" class="chat-${clientsOnline[i]} chats"> </div>`
             }
@@ -76,8 +85,6 @@ usersEls.forEach((item)=>{
         chats.forEach((item)=>{
             item.style.display='none'
         })
-        console.log('юзеры нажимаются')
-        console.log(item.textContent)
         chatEL.display = 'none'
         document.querySelector(`.chat-${item.textContent}`).style.display = 'block'
     })
@@ -112,7 +119,7 @@ formEL.addEventListener("submit", (event)=>{
         alert('Вас никто не слышит!!!')
         return false
     }
-    console.log(to)
+
     const message = document.getElementById("message").value
     if(message!=''){
         ws.send(JSON.stringify({
@@ -120,9 +127,30 @@ formEL.addEventListener("submit", (event)=>{
             'from': myId,
             'message': message
         }))
+      
+        const messageEL = document.createElement('div')
+        const messageWrapper = document.createElement('div')
+        const dateEL = document.createElement('span') 
+        const nameEL = document.createElement('span') 
+        const textEL = document.createElement('span') 
+        const date = new Date
+        dateEL.appendChild(document.createTextNode(`${date.getHours()}:${date.getMinutes()}`))
+        messageEL.className="message"
+        messageWrapper.className='message-wrapper'
+        nameEL.appendChild(document.createTextNode(`${myId}: `))
+        textEL.appendChild(document.createTextNode(`${message}`))
+        dateEL.classList.add('message-time')
+        nameEL.classList.add('message-name')
+        textEL.classList.add('message-text')
+        messageWrapper.appendChild(messageEL)
+        messageWrapper.classList.add('my_message')
+        document.querySelector(`.chat-${to}`).appendChild(messageWrapper)
+        messageEL.appendChild(nameEL)
+        messageEL.appendChild(textEL)
+        messageEL.appendChild(dateEL)
+        nameEL.scrollIntoView({ behavior: "smooth"})
+
         document.getElementById("message").value= ''
-    // }else if(name==''){
-    //     alert('Вы не указали имя!!!')
     }else{
         alert('Вы ничего не написали в сообщение!!!')
     }
@@ -130,3 +158,4 @@ formEL.addEventListener("submit", (event)=>{
     
     return false
 });
+

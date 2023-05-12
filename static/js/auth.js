@@ -10,6 +10,8 @@ const users = [
     {'login': 'alex', 'password': 123},
     {'login': 'alex1', 'password': 123},
     {'login': 'alex2', 'password': 123},
+    {'login': 'alex3', 'password': 123},
+    {'login': 'alex4', 'password': 123},
 ]
 
 // location.replace("index.html")

@@ -4,6 +4,11 @@ const onlineUsers = document.querySelector('.users')
 const hideBtn = document.getElementById('usersBtn')
 const collocutorEl = document.getElementById('collocutor')
 
+
+document.addEventListener('click', (target)=>{
+    console.log(target.target)
+})
+
 usersEl.addEventListener('click', ()=>{
   
     usersEl.classList.add('online_users-active')
@@ -18,6 +23,7 @@ usersEl.addEventListener('click', ()=>{
             counter++
         }
         item.addEventListener('click', ()=>{
+            // console.log(target.target)
             users.forEach((j)=>{
                 if(counter>0){
                     j.classList.remove('user-selected')
@@ -40,7 +46,6 @@ usersEl.addEventListener('click', ()=>{
 
 hideBtn.addEventListener('click', (event)=>{
     event.stopPropagation(); 
-    console.log(123)
     usersEl.classList.remove('online_users-active')
     usersInnerEl.classList.remove('online_users_inner-active')
     onlineUsers.style.display = 'none'
