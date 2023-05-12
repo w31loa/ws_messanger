@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../css/main.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,14 @@
     <div class="container">
 
         <div class="profile_wrapper">
-            <div class="profile"></div>
+            <div class="profile">
+                <div class="profile_inner">
+                    <span id="name_value"></span>
+                   
+                </div>  
+                <button id="exitBtn">Выйти</button>
+                <button id="profileBtn" class="hide_usersBtn">Скрыть</button>
+            </div>
         </div>
 
         <div class="chat__wrapper">
@@ -29,7 +36,7 @@
                 </div>
 
             <form id="messageForm" >
-                <input type="text" name="name" id="name" placeholder="Введите имя..." autocomplete="off">
+                <span id="collocutor"> </span>
                 <input type="text" name="message" id="message" placeholder="Введите сообщение..." value="" autocomplete="off">
                 <input type="submit" value=">" class="send_button">
             </form>
@@ -39,11 +46,20 @@
             <div class="online_users">
                 <div class="online_users_inner">
                     <span id="online_value"></span>
+                   
+                </div>  
+                <div class="users">
+                    <div class="user user-selected" id="alex">alex</div>
+                    <div class="user user-selected" id="alex1">alex1</div>
+                    <div class="user user-selected" id="alex2">alex2</div>
                 </div>
+                <button id="usersBtn" class="hide_usersBtn">Скрыть</button>
             </div>
         </div>
         
     </div>
-    <script src="client.js"></script>
+    <script type="module" src="../js/client.js"></script>
+    <script type="module" src="../js/onlineUsersHandler.js"></script>
+    <script type="module" src="../js/profileHandler.js"></script>
 </body>
 </html>
