@@ -2,9 +2,11 @@ import * as Ws from 'ws';
 import {v4 as uuid} from "uuid"
 import http from 'http'
 import {writeFile, readFileSync, existsSync, readFile} from 'fs'
-import express, { json } from 'express'
+import express, { json, raw } from 'express'
 import path from 'path'
 import ejs from 'ejs'
+import fs from 'fs'
+
 
 const __dirname = path.resolve(path.dirname(''));
 
@@ -25,17 +27,63 @@ app.get('/mes' , (req,res)=>{
     res.render('../views/index')
 })
 
+// fs.writeFile('users.json', JSON.stringify({login:'alex',password:123}),(err)=>{
+//     if(err) console.log(err)
+//     console.log('файл записан')
+//     return
+// })
 
-     app.post('/auth',(req,res)=>{
-        user = req.body
-        res.end()
-       
-     })
+app.get('/users', (req,res)=>{
+const users =  JSON.parse(fs.readFileSync('users.json')) 
+    res.json(users)
+})
+
+
+
+app.post('/auth',(req,res)=>{
+    
+    user = req.body
+    res.end()
+})
+
+app.post('/reg', (req,res)=>{
+
+    const {login,password} = req.body
+    const tmp = 0
+
+    const users =  JSON.parse(fs.readFileSync('users.json')) 
+    console.log(users)
+    // users.forEach((item)=>{
+    //     if(item.login == login){
+    //         res.json('пользователь уже существует')
+    //         tmp=1
+    //     } 
+    // })
+    // if(tmp!=1){
+        users.push({"login":login,"password":password})
+        fs.writeFile('users.json', JSON.stringify(users), (err)=>{
+            if (err) throw err
+        })
+        // res.json('пользователь создан')
+    // }
+   
+        
+})
 
 const clients = {}
 const log = existsSync("log") && readFileSync("log")
 const messages = []
 
+
+// fs.writeFile('users.json', JSON.stringify([
+//     {'login': 'alex', 'password': 123},
+//     {'login': 'alex1', 'password': 123},
+//     {'login': 'alex2', 'password': 123},
+//     {'login': 'alex3', 'password': 123},
+//     {'login': 'alex4', 'password': 123},
+// ]) , (err)=>{
+//     if (err)console.log(err)
+// } )
 
 
 const server = http.createServer(app)
@@ -86,18 +134,17 @@ wss.on('connection', (ws)=>{
             clients[id].send(JSON.stringify({clientsOnline: Object.keys(clients)}))
         }
     })
-    ws.on('SIGINT' , ()=>{
-        ws.close()
-        writeFile('chatLog', JSON.stringify(messages) , (err)=>{
-            if (err){
-                console.log(err)
-            }
-            ws.exit()
-        })
+    // ws.on('SIGINT' , ()=>{
+    //     ws.close()
+    //     fs.writeFile('chatLog', JSON.stringify(messages) , (err)=>{
+    //         if (err){
+    //             console.log(err)
+    //         }
+    //         ws.exit()
+    //     })
     
-    })
+    // })
 })
-
 
     
 
